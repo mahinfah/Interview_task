@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Interview_task.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Interview_task.Controllers
@@ -22,6 +23,24 @@ namespace Interview_task.Controllers
         {
             return View();
         }
+
+
+
+        public IActionResult Public()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult Secure()
+        {
+            return View();
+        }
+
+
+
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
