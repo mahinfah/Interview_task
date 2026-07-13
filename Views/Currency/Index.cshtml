@@ -3,3 +3,35 @@
 *@
 @{
 }
+@model Interview_task.Models.CurrencyViewModel
+
+<h2>Currency Converter</h2>
+
+<form method="post">
+
+    <div>
+        <label>Amount</label>
+        <input asp-for="Amount" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>From Currency</label>
+        <input asp-for="FromCurrency" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>To Currency</label>
+        <input asp-for="ToCurrency" />
+    </div>
+
+    <br />
+
+    <button type="submit">
+        Convert
+    </button>
+
+</form>
