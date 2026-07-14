@@ -3,35 +3,64 @@
 *@
 @{
 }
+
 @model Interview_task.Models.CurrencyViewModel
+
+@{
+    ViewData["Title"] = "Currency Converter";
+}
 
 <h2>Currency Converter</h2>
 
-<form method="post">
+@if (ViewBag.Error != null)
+{
+    <div style="color:red; margin-bottom:15px;">
+        @ViewBag.Error
+    </div>
+}
 
-    <div>
-        <label>Amount</label>
-        <input asp-for="Amount" />
+<form asp-action="Index" method="post">
+
+    <div style="margin-bottom:15px;">
+        <label asp-for="Amount"></label><br />
+        <input asp-for="Amount" class="form-control" />
+        <span asp-validation-for="Amount" style="color:red"></span>
     </div>
 
-    <br />
-
-    <div>
-        <label>From Currency</label>
-        <input asp-for="FromCurrency" />
+    <div style="margin-bottom:15px;">
+        <label asp-for="FromCurrency">From Currency</label><br />
+        <input asp-for="FromCurrency" class="form-control" placeholder="USD" />
+        <span asp-validation-for="FromCurrency" style="color:red"></span>
     </div>
 
-    <br />
-
-    <div>
-        <label>To Currency</label>
-        <input asp-for="ToCurrency" />
+    <div style="margin-bottom:15px;">
+        <label asp-for="ToCurrency">To Currency</label><br />
+        <input asp-for="ToCurrency" class="form-control" placeholder="BDT" />
+        <span asp-validation-for="ToCurrency" style="color:red"></span>
     </div>
 
-    <br />
-
-    <button type="submit">
+    <button type="submit" class="btn btn-primary">
         Convert
     </button>
 
 </form>
+
+@if (Model.ConvertedAmount > 0)
+{
+    <hr />
+
+    <h3>Conversion Result</h3>
+
+    <p>
+        <strong>@Model.Amount @Model.FromCurrency.ToUpper()</strong>
+        =
+        <strong>@Model.ConvertedAmount @Model.ToCurrency.ToUpper()</strong>
+    </p>
+}
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

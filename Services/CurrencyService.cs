@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using Interview_task.Models;
 
 namespace Interview_task.Services
 {
@@ -12,13 +11,9 @@ namespace Interview_task.Services
             _httpClient = httpClient;
         }
 
-        public async Task<ExchangeRateResponse?> ConvertCurrency(
-            decimal amount,
-            string from,
-            string to  )
+        public async Task<decimal?> ConvertCurrency(decimal amount, string from, string to)
         {
-            string url =
-                $"https://api.frankfurter.app/latest?amount={amount}&from={from}&to={to}";
+            string url = $"https://open.er-api.com/v6/latest/{from}";
 
             var response = await _httpClient.GetAsync(url);
 
@@ -27,10 +22,20 @@ namespace Interview_task.Services
                 return null;
             }
 
-            string json =
-                await response.Content.ReadAsStringAsync();
+            string json = await response.Content.ReadAsStringAsync();
 
-            return JsonSerializer.Deserialize<ExchangeRateResponse>(json);
+            using JsonDocument document = JsonDocument.Parse(json);
+
+            var rates = document.RootElement.GetProperty("rates");
+
+            if (!rates.TryGetProperty(to, out JsonElement rateElement))
+            {
+                return null;
+            }
+
+            decimal rate = rateElement.GetDecimal();
+
+            return amount * rate;
         }
     }
 }
