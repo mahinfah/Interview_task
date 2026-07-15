@@ -1,7 +1,8 @@
 ﻿using Interview_task.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace Interview_task.Controllers
@@ -10,22 +11,23 @@ namespace Interview_task.Controllers
     {
         private readonly IConfiguration _configuration;
 
-        // ONLY ONE constructor
         public AccountController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
+        // ==========================
+        // LOGIN PAGE
+        // ==========================
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
-
-
-
-
+        // ==========================
+        // NORMAL LOGIN
+        // ==========================
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -35,28 +37,21 @@ namespace Interview_task.Controllers
             if (model.Username == username &&
                 model.Password == password)
             {
-                // Create claims
                 var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.Name, model.Username)
-        };
+                {
+                    new Claim(ClaimTypes.Name, model.Username)
+                };
 
-                // Create identity
                 var claimsIdentity = new ClaimsIdentity(
                     claims,
                     CookieAuthenticationDefaults.AuthenticationScheme);
 
-                // Create principal
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
-
-
-                // Create authentication cookie
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
                     claimsPrincipal);
 
-                // Redirect to secure page
                 return RedirectToAction("Secure", "Home");
             }
 
@@ -64,7 +59,38 @@ namespace Interview_task.Controllers
             return View(model);
         }
 
-        
+        // ==========================
+        // GOOGLE LOGIN
+        // ==========================
+        [HttpGet]
+        public IActionResult GoogleLogin()
+        {
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = Url.Action(nameof(GoogleResponse))
+            };
+
+            // Always ask the user to choose a Google account
+            properties.SetParameter("prompt", "select_account");
+
+            return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+        }
+
+        // GOOGLE CALLBACK
+
+        [HttpGet]
+        public IActionResult GoogleResponse()
+        {
+            return RedirectToAction("Secure", "Home");
+        }
+        // LOGOUT
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return RedirectToAction("Login", "Account");
+        }
 
     }
 }

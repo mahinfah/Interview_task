@@ -21,7 +21,9 @@ namespace Interview_task.Controllers
 
         public IActionResult Privacy()
         {
+
             return View();
+        
         }
 
 

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Interview_task.Services;
+using Microsoft.AspNetCore.Authentication.Google;
 
 namespace Interview_task
 {
@@ -14,16 +15,25 @@ namespace Interview_task
             builder.Services.AddScoped<Interview_task.Services.CurrencyService>();
 
             builder.Services
-                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = "/Account/Login";
-                    options.AccessDeniedPath = "/Account/Login";
-                    options.LogoutPath = "/Account/Logout";
-                });
+      .AddAuthentication(options =>
+      {
+          options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+          options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+      })
+      .AddCookie(options =>
+      {
+          options.LoginPath = "/Account/Login";
+          options.LogoutPath = "/Account/Logout";
+      })
+      .AddGoogle(options =>
+      {
+          options.ClientId = builder.Configuration["GoogleAuth:ClientId"]!;
+          options.ClientSecret = builder.Configuration["GoogleAuth:ClientSecret"]!;
+      });
+
 
             var app = builder.Build();
-
+            
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
