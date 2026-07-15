@@ -252,9 +252,6 @@ https://api.frankfurter.app/latest?amount=100&from=USD&to=BDT
 ---
 
 # Author
-
-**Kazi Fahad Mahin**
-
 GitHub:
 
 https://github.com/mahinfah
