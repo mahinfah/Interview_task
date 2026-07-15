@@ -16,18 +16,14 @@ namespace Interview_task.Controllers
             _configuration = configuration;
         }
 
-        // ==========================
-        // LOGIN PAGE
-        // ==========================
+         // LOGIN PAGE
+       
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
-        // ==========================
-        // NORMAL LOGIN
-        // ==========================
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -59,9 +55,7 @@ namespace Interview_task.Controllers
             return View(model);
         }
 
-        // ==========================
-        // GOOGLE LOGIN
-        // ==========================
+    
         [HttpGet]
         public IActionResult GoogleLogin()
         {
@@ -70,20 +64,17 @@ namespace Interview_task.Controllers
                 RedirectUri = Url.Action(nameof(GoogleResponse))
             };
 
-            // Always ask the user to choose a Google account
             properties.SetParameter("prompt", "select_account");
 
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
 
-        // GOOGLE CALLBACK
 
         [HttpGet]
         public IActionResult GoogleResponse()
         {
             return RedirectToAction("Secure", "Home");
         }
-        // LOGOUT
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
