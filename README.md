@@ -186,45 +186,6 @@ for OAuth authentication.
 
 ---
 
-# Application Screenshots
-
-## Login Page
-
-> Add screenshot here
-
-```
-screenshots/login.png
-```
-
----
-
-## Secure Page
-
-> Add screenshot here
-
-```
-screenshots/secure.png
-```
-
----
-
-## Currency Converter
-
-> Add screenshot here
-
-```
-screenshots/currency.png
-```
-
----
-
-## Google Login
-
-> Add screenshot here
-
-```
-screenshots/google-login.png
-```
 
 ---
 
