@@ -1,60 +1,69 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-
-@model Interview_task.Models.CurrencyViewModel
-
-@{
-    ViewData["Title"] = "Currency Converter";
-}
+﻿@model Interview_task.Models.CurrencyViewModel
 
 <h2>Currency Converter</h2>
 
-@if (ViewBag.Error != null)
-{
-    <div style="color:red; margin-bottom:15px;">
-        @ViewBag.Error
-    </div>
-}
-
 <form asp-action="Index" method="post">
 
-    <div style="margin-bottom:15px;">
-        <label asp-for="Amount"></label><br />
-        <input asp-for="Amount" class="form-control" />
+    <div>
+        <label>Amount</label><br />
+        <input asp-for="Amount" />
         <span asp-validation-for="Amount" style="color:red"></span>
     </div>
 
-    <div style="margin-bottom:15px;">
-        <label asp-for="FromCurrency">From Currency</label><br />
-        <input asp-for="FromCurrency" class="form-control" placeholder="USD" />
+    <br />
+
+    <div>
+        <label>From Currency</label><br />
+
+        <select asp-for="FromCurrency">
+            <option value="USD">USD</option>
+            <option value="BDT">BDT</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="INR">INR</option>
+            <option value="JPY">JPY</option>
+        </select>
+
         <span asp-validation-for="FromCurrency" style="color:red"></span>
     </div>
 
-    <div style="margin-bottom:15px;">
-        <label asp-for="ToCurrency">To Currency</label><br />
-        <input asp-for="ToCurrency" class="form-control" placeholder="BDT" />
+    <br />
+
+    <div>
+        <label>To Currency</label><br />
+
+        <select asp-for="ToCurrency">
+            <option value="USD">USD</option>
+            <option value="BDT">BDT</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="INR">INR</option>
+            <option value="JPY">JPY</option>
+        </select>
+
         <span asp-validation-for="ToCurrency" style="color:red"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">
-        Convert
-    </button>
+    <br />
+
+    <button type="submit">Convert</button>
 
 </form>
 
+<br />
+
 @if (Model.ConvertedAmount > 0)
 {
-    <hr />
+    <h3>
+        @Model.Amount @Model.FromCurrency =
+        @Model.ConvertedAmount @Model.ToCurrency
+    </h3>
+}
 
-    <h3>Conversion Result</h3>
-
-    <p>
-        <strong>@Model.Amount @Model.FromCurrency.ToUpper()</strong>
-        =
-        <strong>@Model.ConvertedAmount @Model.ToCurrency.ToUpper()</strong>
+@if (ViewBag.Error != null)
+{
+    <p style="color:red">
+        @ViewBag.Error
     </p>
 }
 
